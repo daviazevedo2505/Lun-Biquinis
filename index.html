@@ -193,6 +193,20 @@
   .filter-btn:hover{ border-color:var(--cobalto); color:var(--cobalto); }
   .filter-btn.active{ background:var(--cobalto); color:var(--offwhite); border-color:var(--cobalto); }
 
+  .subfilters{
+    display:none; gap:8px; flex-wrap:wrap; margin:-24px 0 34px; padding-left:2px;
+    animation:subfilter-in .3s ease;
+  }
+  .subfilters.show{ display:flex; }
+  @keyframes subfilter-in{ from{ opacity:0; transform:translateY(-6px);} to{ opacity:1; transform:translateY(0);} }
+  .subfilter-btn{
+    padding:7px 16px; border-radius:100px; border:1px solid transparent;
+    font-size:0.7rem; letter-spacing:0.06em; text-transform:uppercase; background:transparent; color:var(--azul-suave);
+    transition:all .2s ease;
+  }
+  .subfilter-btn:hover{ color:var(--cobalto); }
+  .subfilter-btn.active{ background:var(--azul-suave); color:#fff; }
+
   /* ---------- GRID ---------- */
   .grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:28px; }
   .card{
@@ -206,8 +220,12 @@
     position:relative; aspect-ratio:1/1;
     display:flex; align-items:center; justify-content:center; padding:22px;
     background:linear-gradient(160deg, var(--areia) 0%, var(--offwhite) 65%);
+    overflow:hidden;
   }
   .card-media svg{ width:66%; height:66%; }
+  .card-media-photo{ padding:0; }
+  .card-photo{ width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
+  .card:hover .card-photo{ transform:scale(1.04); }
   .card-badge{
     position:absolute; top:14px; left:14px;
     font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase;
@@ -219,12 +237,7 @@
   .card-title{ font-size:1.3rem; margin-top:6px; color:var(--cobalto); }
   .card-color{ margin-top:2px; font-size:0.84rem; color:var(--ink-soft); }
   .card-row{ display:flex; align-items:center; justify-content:space-between; margin-top:16px; }
-  .sizes{ display:flex; gap:6px; }
-  .size{
-    width:26px; height:26px; border-radius:50%; border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center; font-size:0.66rem; font-weight:500;
-    color:var(--ink-soft);
-  }
+  .card-tamanho{ font-size:0.78rem; letter-spacing:0.04em; color:var(--ink-soft); }
   .tag{
     position:relative; background:var(--cobalto); color:var(--offwhite); font-weight:500;
     font-family:'Cormorant Garamond',serif; font-size:1.05rem;
@@ -233,29 +246,32 @@
   }
   .card-cta{
     margin-top:16px; width:100%; text-align:center;
-    background:var(--cobalto-deep); color:var(--offwhite); padding:12px; border-radius:8px;
-    font-size:0.76rem; letter-spacing:0.08em; text-transform:uppercase;
+    background:var(--cobalto-deep); color:var(--offwhite); padding:9px; border-radius:8px;
+    font-size:0.68rem; letter-spacing:0.07em; text-transform:uppercase;
     transition:background .2s ease;
   }
   .card-cta:hover{ background:var(--cobalto); }
 
   /* ---------- CENÁRIOS ---------- */
-  .scenes{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .scenes{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px; max-width:640px; margin:0 auto; }
   .scene{ text-align:center; }
   .scene-num{ font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--azul-suave); font-size:1rem; }
   .scene-frame{
-    margin-top:16px; aspect-ratio:4/5; border-radius:6px; border:1px solid var(--line);
+    margin-top:16px; aspect-ratio:4/5; border-radius:6px;
     background: linear-gradient(160deg, var(--azul-suave) 0%, var(--cobalto) 130%);
     display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+    box-shadow:0 20px 40px -18px rgba(13,59,142,0.32);
   }
-  .scene-frame svg{ width:42%; opacity:0.92; }
+  .scene-frame img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+  .scene:hover .scene-frame img{ transform:scale(1.05); }
   .scene h3{ margin-top:18px; font-size:1.2rem; color:var(--cobalto); }
   .scene p{ margin-top:4px; font-size:0.86rem; color:var(--ink-soft); }
 
   /* ---------- MANIFESTO ---------- */
   .manifesto{
+    position:relative;
     background:var(--cobalto-deep); color:var(--offwhite); border-radius:6px;
-    padding:72px 44px; display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center;
+    padding:72px 44px 56px; display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center;
   }
   .manifesto h2{ font-size:clamp(1.9rem,3vw,2.5rem); color:#fff; }
   .manifesto p{ margin-top:18px; line-height:1.75; color:rgba(254,253,251,0.8); }
@@ -264,6 +280,11 @@
   .manifesto-list li::before{ content:'~'; color:var(--azul-suave); font-weight:600; }
   .manifesto-orb{ display:flex; justify-content:center; }
   .manifesto-orb svg{ width:220px; opacity:0.9; }
+  .manifesto-assinatura{
+    position:absolute; bottom:20px; right:32px;
+    font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.95rem;
+    color:rgba(254,253,251,0.55); letter-spacing:0.02em;
+  }
 
   /* ---------- FOOTER ---------- */
   footer{ background:var(--cobalto-deep); color:var(--offwhite); margin-top:20px; }
@@ -288,7 +309,7 @@
     .hero-inner{ grid-template-columns:1fr; }
     .hero-art{ order:-1; max-width:260px; margin:0 auto; }
     .grid, .scenes{ grid-template-columns:repeat(2,1fr); }
-    .manifesto{ grid-template-columns:1fr; padding:48px 28px; }
+    .manifesto{ grid-template-columns:1fr; padding:48px 28px 52px; }
     .manifesto-orb{ order:-1; }
     .footer-inner{ grid-template-columns:1fr 1fr; }
   }
@@ -297,6 +318,178 @@
     .footer-inner{ grid-template-columns:1fr; }
     .hero-actions{ flex-direction:column; align-items:stretch; }
   }
+  /* ============ PAINEL DE PRODUTO ============ */
+  .produto-painel{
+    position:fixed; inset:0; z-index:100;
+    background:
+      radial-gradient(130% 90% at 100% 0%, rgba(111,161,214,0.28) 0%, transparent 55%),
+      radial-gradient(110% 80% at 0% 100%, rgba(13,59,142,0.16) 0%, transparent 50%),
+      linear-gradient(180deg, rgba(111,161,214,0.10) 0%, transparent 40%),
+      var(--creme);
+    overflow-y:auto;
+    opacity:0; visibility:hidden;
+    transition:opacity .45s ease, visibility .45s;
+  }
+  .produto-painel.open{ opacity:1; visibility:visible; }
+
+  .pp-inner{ max-width:1180px; margin:0 auto; padding:32px; position:relative; }
+
+  .pp-watermark{
+    position:fixed; top:92px; right:40px; width:132px; height:132px;
+    opacity:0; pointer-events:none; z-index:2;
+    transition:opacity .8s ease .4s;
+  }
+  .produto-painel.open .pp-watermark{ opacity:0.35; }
+  .pp-watermark span{
+    position:absolute; background-size:contain; background-repeat:no-repeat; background-position:center;
+    opacity:0;
+  }
+  /* posições relativas ao logo circular real (viewBox 132x132) */
+  .wm-star{ top:20%; right:8%; width:26%; height:24%; background-image:url("assets/wm-star.png"); }
+  .wm-moon{ top:6%;  left:12%; width:47%; height:50%; background-image:url("assets/wm-moon.png"); }
+  .wm-wave{ top:56%; left:11%; width:61%; height:11%; background-image:url("assets/wm-wave.png"); }
+  .wm-text{ top:64%; left:14%; width:56%; height:26%; background-image:url("assets/wm-text.png"); }
+
+  /* coreografia: estrela -> lua -> ondas -> texto, mantém, depois desfaz tudo, vira estrela de novo */
+  .wm-star{ animation: wm-star-cycle 11s ease-in-out infinite; }
+  .wm-moon{ animation: wm-piece 11s ease-in-out infinite; animation-delay:0s; }
+  .wm-wave{ animation: wm-piece 11s ease-in-out infinite; animation-delay:0s; }
+  .wm-text{ animation: wm-piece 11s ease-in-out infinite; animation-delay:0s; }
+
+  /* a estrela nasce primeiro e é a última a sair (vira o "núcleo") */
+  @keyframes wm-star-cycle{
+    0%   { opacity:0; transform:scale(0.4) rotate(-40deg); }
+    8%   { opacity:1; transform:scale(1) rotate(0deg); }
+    82%  { opacity:1; transform:scale(1) rotate(0deg); }
+    92%  { opacity:1; transform:scale(1.15) rotate(20deg); }
+    100% { opacity:0; transform:scale(0.4) rotate(-40deg); }
+  }
+  /* lua surge da estrela */
+  .wm-moon{ animation-name: wm-moon-cycle; }
+  @keyframes wm-moon-cycle{
+    0%,14%  { opacity:0; transform:translate(40%,20%) scale(0.5); }
+    26%,78% { opacity:1; transform:translate(0,0) scale(1); }
+    88%,100%{ opacity:0; transform:translate(40%,20%) scale(0.5); }
+  }
+  /* ondas surgem depois da lua */
+  .wm-wave{ animation-name: wm-wave-cycle; }
+  @keyframes wm-wave-cycle{
+    0%,22%  { opacity:0; transform:translateY(-30%) scaleX(0.5); }
+    34%,74% { opacity:1; transform:translateY(0) scaleX(1); }
+    84%,100%{ opacity:0; transform:translateY(-30%) scaleX(0.5); }
+  }
+  /* texto surge por último */
+  .wm-text{ animation-name: wm-text-cycle; }
+  @keyframes wm-text-cycle{
+    0%,32%  { opacity:0; transform:translateY(-20%) scale(0.85); }
+    44%,70% { opacity:1; transform:translateY(0) scale(1); }
+    80%,100%{ opacity:0; transform:translateY(-20%) scale(0.85); }
+  }
+
+  @media (max-width:820px){ .pp-watermark{ width:92px; height:92px; top:74px; right:18px; } }
+  @media (prefers-reduced-motion: reduce){
+    .wm-star,.wm-moon,.wm-wave,.wm-text{ animation:none; opacity:1; transform:none; }
+  }
+
+  /* animação de entrada em sequência */
+  .produto-painel.open .pp-close{ animation:pp-rise .5s ease-out .05s both; }
+  .produto-painel.open .pp-media{ animation:pp-rise-scale .7s cubic-bezier(.2,.7,.2,1) .12s both; }
+  .produto-painel.open .pp-eyebrow{ animation:pp-rise .5s ease-out .25s both; }
+  .produto-painel.open .pp-title{ animation:pp-rise .5s ease-out .32s both; }
+  .produto-painel.open .pp-cor-label{ animation:pp-rise .5s ease-out .38s both; }
+  .produto-painel.open .pp-preco{ animation:pp-rise .5s ease-out .44s both; }
+  .produto-painel.open .pp-desc{ animation:pp-rise .5s ease-out .5s both; }
+  .produto-painel.open .pp-fields{ animation:pp-rise .5s ease-out .58s both; }
+  .produto-painel.open .pp-buy-wrap{ animation:pp-rise .5s ease-out .66s both; }
+  .produto-painel.open .pp-related{ animation:pp-rise .5s ease-out .3s both; }
+  @keyframes pp-rise{ from{ opacity:0; transform:translateY(20px); } to{ opacity:1; transform:translateY(0); } }
+  @keyframes pp-rise-scale{ from{ opacity:0; transform:translateY(28px) scale(0.97); } to{ opacity:1; transform:translateY(0) scale(1); } }
+
+  .pp-close{
+    background:none; border:none; color:var(--ink-soft); cursor:pointer;
+    font-family:'Jost',sans-serif; font-size:0.8rem; letter-spacing:0.12em; text-transform:uppercase;
+    padding:8px 0; margin-bottom:32px; transition:color .2s, transform .2s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .pp-close:hover{ color:var(--cobalto); transform:translateX(-4px); }
+
+  .pp-main{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+
+  .pp-media{
+    position:relative; aspect-ratio:4/5; border-radius:10px;
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(13,59,142,0.28), 0 0 0 1px rgba(13,59,142,0.06);
+  }
+  /* motivo lunar sutil de fundo no placeholder */
+  .pp-media::before{
+    content:''; position:absolute; width:70%; height:70%; right:-14%; top:-14%;
+    background:radial-gradient(circle at 30% 30%, rgba(254,253,251,0.5), transparent 62%);
+    border-radius:50%;
+  }
+  .pp-media svg{ width:44%; height:44%; position:relative; z-index:1;
+    filter:drop-shadow(0 14px 26px rgba(13,59,142,0.22)); }
+  .pp-media-photo::before{ display:none; }
+  .pp-photo{ width:100%; height:100%; object-fit:cover; position:relative; z-index:1; }
+  .pp-badge{
+    position:absolute; top:18px; left:18px; z-index:2; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase;
+    background:var(--offwhite); color:var(--cobalto); padding:6px 12px; border-radius:100px;
+    box-shadow:0 4px 12px rgba(13,59,142,0.1);
+  }
+  .pp-media-note{
+    position:absolute; bottom:18px; right:18px; z-index:2; font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--ink-soft); font-style:italic;
+  }
+
+  .pp-details{ padding-top:8px; }
+  .pp-eyebrow{ font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--azul-suave); font-weight:500; }
+  .pp-title{ font-size:clamp(2rem,3.5vw,2.8rem); color:var(--cobalto); margin-top:12px; line-height:1.05; }
+  .pp-cor-label{ font-style:italic; color:var(--ink-soft); font-size:1.05rem; letter-spacing:0.08em; text-transform:uppercase; margin-top:6px; }
+  .pp-preco{ font-family:'Cormorant Garamond',serif; font-size:1.7rem; color:var(--cobalto); margin-top:20px; font-weight:600; }
+  .pp-desc{ margin-top:20px; line-height:1.75; color:var(--ink-soft); font-size:1rem; max-width:420px; }
+
+  .pp-field-label{ font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-soft); margin-top:28px; margin-bottom:12px; }
+  .pp-swatch{
+    display:inline-flex; align-items:center; gap:10px; padding:10px 18px; border-radius:100px; font-size:0.85rem; font-weight:500;
+    box-shadow:0 4px 14px rgba(13,59,142,0.16);
+  }
+  .pp-swatch-outline{
+    background:var(--offwhite); color:var(--cobalto); border:1px solid var(--line);
+    box-shadow:none;
+  }
+
+  .pp-buy{
+    display:block; width:100%; text-align:center; margin-top:32px;
+    background:var(--cobalto); color:var(--offwhite); padding:18px; border-radius:10px;
+    font-size:0.82rem; letter-spacing:0.14em; text-transform:uppercase;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+    box-shadow:0 14px 28px -8px rgba(13,59,142,0.45);
+  }
+  .pp-buy:hover{ background:var(--cobalto-deep); transform:translateY(-2px); box-shadow:0 20px 36px -8px rgba(13,59,142,0.5); }
+  .pp-buy-note{ text-align:center; margin-top:14px; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
+
+  .pp-related{ margin-top:96px; border-top:1px solid var(--line); padding-top:56px; }
+  .pp-related-head{ text-align:center; font-size:0.74rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--azul-suave); margin-bottom:36px; font-weight:500; }
+  .pp-related-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .rel-card{ cursor:pointer; }
+  .rel-media{
+    aspect-ratio:1/1; border-radius:10px;
+    background:linear-gradient(160deg, rgba(111,161,214,0.22) 0%, var(--areia) 55%, var(--offwhite) 100%);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 12px 30px -14px rgba(13,59,142,0.22), 0 0 0 1px rgba(13,59,142,0.05);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .rel-card:hover .rel-media{ transform:translateY(-6px); box-shadow:0 24px 44px -16px rgba(13,59,142,0.34); }
+  .rel-media svg{ width:50%; height:50%; filter:drop-shadow(0 8px 16px rgba(13,59,142,0.18)); }
+  .rel-media-photo{ padding:0; overflow:hidden; }
+  .rel-photo{ width:100%; height:100%; object-fit:cover; }
+  .rel-info{ display:flex; justify-content:space-between; align-items:baseline; margin-top:16px; gap:12px; }
+  .rel-nome{ font-size:1.15rem; color:var(--cobalto); }
+  .rel-preco{ font-family:'Cormorant Garamond',serif; color:var(--ink-soft); }
+
+  @media (max-width:820px){
+    .pp-main{ grid-template-columns:1fr; gap:32px; }
+    .pp-related-grid{ grid-template-columns:1fr; max-width:340px; margin:0 auto; }
+  }
+
 </style>
 </head>
 <body>
@@ -311,6 +504,7 @@
       <a href="#catalogo">Catálogo</a>
       <a href="#manifesto">Sobre</a>
       <a href="#contato">Contato</a>
+      <a href="https://www.instagram.com/lune.biquinis/" target="_blank" rel="noopener">Instagram</a>
     </nav>
     <a class="nav-cta" href="#catalogo">Ver catálogo</a>
   </div>
@@ -319,12 +513,12 @@
 <section class="hero" id="top">
   <div class="hero-inner">
     <div>
-      <div class="eyebrow">Coleção Verão 26</div>
-      <h1>Feita para<br>a <em>água</em>,<br>não pra vitrine.</h1>
-      <p>Piscina, cachoeira, lagoa ou mar. Biquínis, maiôs e conjuntos desenhados em Goiás pra quem vive de azul em azul — tecido secagem rápida, proteção UV50+ e recorte pensado pra se mover.</p>
+      <div class="eyebrow">A Primeira Luz</div>
+      <h1>Moda praia<br>feita para acompanhar<br>seus dias de <em>sol</em>.</h1>
+      <p>Leveza para dias que ficam na memória. Biquínis pensados para acompanhar seus momentos de sol com conforto, movimento e beleza natural.</p>
       <div class="hero-actions">
         <a class="btn-primary" href="#catalogo">Ver catálogo completo</a>
-        <a class="btn-ghost" href="https://wa.me/5562937237975?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20biqu%C3%ADnis%20LUN%C3%89.">Falar no WhatsApp</a>
+        <a class="btn-ghost" href="https://wa.me/5562993723797?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20biqu%C3%ADnis%20LUN%C3%89.">Falar no WhatsApp</a>
       </div>
     </div>
     <div class="hero-art">
@@ -363,8 +557,15 @@
     <div class="filters" id="filters">
       <button class="filter-btn active" data-filter="todos">Todos</button>
       <button class="filter-btn" data-filter="biquini">Biquínis</button>
-      <button class="filter-btn" data-filter="maio">Maiôs</button>
-      <button class="filter-btn" data-filter="conjunto">Conjuntos</button>
+      <button class="filter-btn" data-filter="saida">Saída de Praia</button>
+    </div>
+
+    <div class="subfilters" id="subfilters">
+      <button class="subfilter-btn active" data-tipo="todos">Todos</button>
+      <button class="subfilter-btn" data-tipo="Allure">Allure</button>
+      <button class="subfilter-btn" data-tipo="Regulagem">Regulagem</button>
+      <button class="subfilter-btn" data-tipo="Cortininha">Cortininha</button>
+      <button class="subfilter-btn" data-tipo="Fita">Fita</button>
     </div>
 
     <div class="grid" id="catalogGrid"></div>
@@ -382,24 +583,15 @@
     <div class="manifesto">
       <div>
         <div class="eyebrow" style="color:var(--azul-suave);">Manifesto</div>
-        <h2>Inspirada pela quietude.</h2>
-        <p>LUNÉ não nasce de um único lugar, mas da sensação da água. É o azul das cerâmicas, o linho ao sol, a calma de um dia longo. Cada peça acompanha a mulher que encontra beleza no simples, no natural e no que dura.</p>
-        <ul class="manifesto-list">
-          <li>Tecido com secagem rápida e proteção UV50+</li>
-          <li>Modelagem testada em corpo em movimento</li>
-          <li>Produção em pequenos lotes, sem estoque parado</li>
-          <li>Troca facilitada em até 30 dias</li>
-        </ul>
+        <h2>Feita para dias que ficam na memória.</h2>
+        <p>A LUNÉ nasce dos instantes em que o tempo parece desacelerar: o sol tocando a pele, o vento leve no fim da tarde, o corpo livre para se mover e a beleza simples de estar presente.</p>
+        <p>Criamos biquínis para mulheres que encontram encanto no natural, no conforto e nos dias vividos sem pressa. Peças pensadas para acompanhar memórias leves — aquelas que ficam não pelo excesso, mas pela sensação.</p>
+        <p>Entre o descanso e o movimento, entre a delicadeza e a liberdade, a LUNÉ veste momentos que permanecem.</p>
       </div>
       <div class="manifesto-orb">
-        <svg viewBox="0 0 220 220" fill="none">
-          <circle cx="110" cy="110" r="95" stroke="#6FA1D6" stroke-width="1"/>
-          <circle cx="110" cy="110" r="88" stroke="#6FA1D6" stroke-width="1"/>
-          <path d="M96 62C118 62 136 80 136 104C136 128 118 146 96 146C108 140 116 124 116 104C116 84 108 68 96 62Z" stroke="#FEFDFB" stroke-width="1.3"/>
-          <path d="M60 150C74 143 90 143 102 150C114 143 130 143 144 150" stroke="#FEFDFB" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-          <path d="M150 78 L153 88 L163 91 L153 94 L150 104 L147 94 L137 91 L147 88 Z" fill="#FEFDFB"/>
-        </svg>
+        <img src="assets/manifesto-logo.png" alt="LUNÉ Biquínis" style="width:260px; max-width:100%; opacity:0.92;">
       </div>
+      <div class="manifesto-assinatura">— Dieny Estefany</div>
     </div>
   </section>
 
@@ -412,22 +604,21 @@
   <div class="footer-inner">
     <div>
       <h3>LUNÉ</h3>
-      <p>Biquínis e maiôs feitos pra quem vive de azul em azul. Catálogo atualizado toda estação.</p>
+      <p>Biquínis e saídas de praia feitos pra dias de sol e alma leve. Catálogo atualizado toda estação.</p>
     </div>
     <div class="foot-col">
       <span>Coleção</span>
       <a href="#catalogo">Biquínis</a>
-      <a href="#catalogo">Maiôs</a>
-      <a href="#catalogo">Conjuntos</a>
+      <a href="#catalogo">Saída de Praia</a>
     </div>
     <div class="foot-col">
       <span>Atendimento</span>
-      <a href="https://wa.me/5562937237975" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://wa.me/5562993723797" target="_blank" rel="noopener">WhatsApp</a>
       <a href="#manifesto">Sobre a marca</a>
     </div>
     <div class="foot-col">
       <span>Redes</span>
-      <a href="#" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.instagram.com/lune.biquinis/" target="_blank" rel="noopener">Instagram</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -436,25 +627,87 @@
   </div>
 </footer>
 
+<!-- ============ PAINEL DE PRODUTO (overlay) ============ -->
+<div class="produto-painel" id="produtoPainel"></div>
+
 <script>
   const produtos = [
-    { nome:"Biquíni Azulejo", cor:"Azul Cobalto", preco:289, cat:"biquini", padrao:"stripes" },
-    { nome:"Maiô Luné", cor:"Creme Minimalista", preco:349, cat:"maio", padrao:"solid" },
-    { nome:"Top Sereno", cor:"Azul Suave", preco:195, cat:"biquini", padrao:"solid" },
-    { nome:"Conjunto Canga", cor:"Azul Cobalto com Canga", preco:398, cat:"conjunto", padrao:"stripes" },
-    { nome:"Biquíni Areia", cor:"Areia Clara", preco:259, cat:"biquini", padrao:"dots" },
-    { nome:"Maiô Noite", cor:"Cobalto Costas Abertas", preco:379, cat:"maio", padrao:"solid" },
+    { nome:"Biquíni Regulagem Oliva", cor:"Oncinha Verde Oliva", preco:85, cat:"biquini", tipo:"Regulagem", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-regulagem-oliva.jpg",
+      desc:"Biquíni de regulagem com fivela em estampa de oncinha verde-oliva, com fivela dourada e amarração ajustável no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Regulagem Sienna", cor:"Marrom Sienna", preco:85, cat:"biquini", tipo:"Regulagem", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-regulagem-sienna.jpg",
+      desc:"Biquíni de regulagem com fivela em marrom sienna, com detalhe de argola dourada no centro e amarração ajustável no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Allure Champagne", cor:"Champagne", preco:100, cat:"biquini", tipo:"Allure", padrao:"foto", tamanho:"G",
+      foto:"assets/produtos/biquini-allure-champagne.jpg",
+      desc:"Biquíni de top faixa (sem alças) em champagne acetinado, com argola dourada no centro. Elegante e atemporal, para um bronzeado sem marcas." },
+    { nome:"Biquíni Regulagem Pérola", cor:"Pérola", preco:85, cat:"biquini", tipo:"Regulagem", padrao:"foto", tamanho:"P",
+      foto:"assets/produtos/biquini-regulagem-nude-rosado.jpg",
+      desc:"Biquíni de regulagem com fivela em tom pérola, com detalhe de argola dourada no centro e amarração ajustável no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Cortininha Bordeaux", cor:"Bordeaux", preco:79.90, cat:"biquini", tipo:"Cortininha", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-cortininha-zebrinha-vinho.jpg",
+      desc:"Biquíni cortininha em estampa animal print bordeaux, com amarração no pescoço, nas costas e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita Capri", cor:"Xadrez Azul", preco:69.90, cat:"biquini", tipo:"Fita", padrao:"foto", tamanho:"P",
+      foto:"assets/produtos/biquini-cortininha-capri.jpg",
+      desc:"Biquíni de fita em estampa xadrez azul, com amarração no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita Sicília", cor:"Estampa Cítrica", preco:69.90, cat:"biquini", tipo:"Fita", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-fita-sicilia.jpg",
+      desc:"Biquíni de fita em estampa cítrica de laranjas e limões, com amarração no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita Pérola", cor:"Branco Pérola", preco:69.90, cat:"biquini", tipo:"Fita", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-fita-perola.jpg",
+      desc:"Biquíni de fita em branco pérola, clássico e versátil, com amarração no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita com Regulagem Sálvia", cor:"Sálvia", preco:50, cat:"biquini", tipo:"Regulagem", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-fita-regulagem-salvia.jpg",
+      desc:"Biquíni em verde sálvia, com amarração no pescoço e fivelas reguláveis na lateral. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita Vinho", cor:"Vinho", preco:69.90, cat:"biquini", tipo:"Fita", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-fita-vinho.jpg",
+      desc:"Biquíni de fita em vinho profundo, com amarração no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita Bicolor", cor:"Branco com Marrom", preco:50, cat:"biquini", tipo:"Fita", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-fita-bicolor.jpg",
+      desc:"Biquíni de fita bicolor, branco com contorno marrom, com amarração no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita com Regulagem Preto", cor:"Preto", preco:50, cat:"biquini", tipo:"Regulagem", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-fita-regulagem-preto.jpg",
+      desc:"Biquíni em preto clássico, com amarração no pescoço e fivelas reguláveis na lateral. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita Terracota", cor:"Terracota", preco:50, cat:"biquini", tipo:"Fita", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-fita-terracota.jpg",
+      desc:"Biquíni de fita em terracota, com amarração no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita Rosa Bebê", cor:"Rosa Bebê", preco:50, cat:"biquini", tipo:"Fita", padrao:"foto", tamanho:"G",
+      foto:"assets/produtos/biquini-fita-rosa-bebe.jpg",
+      desc:"Biquíni de fita em rosa bebê, com amarração no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Biquíni Fita Marrom", cor:"Marrom", preco:50, cat:"biquini", tipo:"Fita", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-fita-marrom.jpg",
+      desc:"Biquíni de fita em marrom, com amarração no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
+    { nome:"Saída Olga", cor:"Preta", preco:109, cat:"saida", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/saida-olga-preta.jpg",
+      desc:"Saída de praia em preto, com fenda lateral e argola dourada de amarração na cintura. Tecido leve e fluido, com caimento translúcido." },
+    { nome:"Saída Olga", cor:"Branca", preco:109, cat:"saida", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/saida-olga-branca.jpg",
+      desc:"Saída de praia em branco, com fenda lateral e argola dourada de amarração na cintura. Tecido leve e fluido, com caimento translúcido." },
+    { nome:"Biquíni Fita com Regulagem Pink", cor:"Pink", preco:50, cat:"biquini", tipo:"Regulagem", padrao:"foto", tamanho:"M",
+      foto:"assets/produtos/biquini-fita-pink.jpg",
+      desc:"Biquíni de regulagem em pink vibrante, com detalhe de argola dourada no centro e amarração ajustável no pescoço e nas laterais. Tecido leve, com boa sustentação e caimento fluido." },
   ];
 
   const cenas = [
-    { num:"01", nome:"Piscina", desc:"Arquitetura e calma" },
-    { num:"02", nome:"Cachoeira", desc:"Força natural" },
-    { num:"03", nome:"Lagoa", desc:"Refúgio sereno" },
+    { num:"01", nome:"Piscina", desc:"Arquitetura e calma", foto:"assets/cenario-piscina.jpg" },
+    { num:"02", nome:"Cachoeira", desc:"Força natural", foto:"assets/cenario-cachoeira.jpg" },
   ];
 
   const corMap = { "Azul Cobalto":"#0D3B8E", "Creme Minimalista":"#E8DFD2", "Azul Suave":"#6FA1D6",
-    "Azul Cobalto com Canga":"#0D3B8E", "Areia Clara":"#E8DFD2", "Cobalto Costas Abertas":"#0D3B8E" };
-  const catLabel = { biquini:"Biquíni", maio:"Maiô", conjunto:"Conjunto" };
+    "Azul Cobalto com Canga":"#0D3B8E", "Areia Clara":"#E8DFD2", "Cobalto Costas Abertas":"#0D3B8E",
+    "Oncinha Verde Oliva":"#8A9463", "Marrom Sienna":"#5C3A2E", "Champagne":"#EDE3C8", "Pérola":"#D9B8A8",
+    "Bordeaux":"#6B1E2E", "Xadrez Azul":"#9FD3E8", "Pink":"#E4288A", "Estampa Cítrica":"#F2A93B",
+    "Branco Pérola":"#F5F1EA", "Sálvia":"#3FA34D", "Vinho":"#5E1224", "Branco com Marrom":"#FFFFFF",
+    "Preto":"#1A1A1A", "Terracota":"#B5563A", "Rosa Bebê":"#F5C4D3", "Marrom":"#5C4033",
+    "Preta":"#1A1A1A", "Branca":"#FFFFFF" };
+  const catLabel = { biquini:"Biquíni", saida:"Saída de Praia" };
+
+  function corEhClara(hex){
+    const h = hex.replace('#','');
+    const r = parseInt(h.substring(0,2),16), g = parseInt(h.substring(2,4),16), b = parseInt(h.substring(4,6),16);
+    const luminancia = (0.299*r + 0.587*g + 0.114*b) / 255;
+    return luminancia > 0.6;
+  }
 
   function svgPattern(id, padrao, cor){
     if(padrao === "stripes"){
@@ -493,25 +746,30 @@
     </svg>`;
   }
 
-  const fmt = n => n.toLocaleString('pt-BR');
-  const waLink = nome => `https://wa.me/5562937237975?text=${encodeURIComponent(`Olá! Tenho interesse no ${nome}. Ainda está disponível?`)}`;
+  const fmt = n => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const waLink = nome => `https://wa.me/5562993723797?text=${encodeURIComponent(`Olá! Tenho interesse no ${nome}. Ainda está disponível?`)}`;
 
   function cardHTML(p, idx){
+    const realIdx = produtos.indexOf(p);
+    const badge = p.padrao === 'foto' ? '' : `<span class="card-badge">${p.padrao === 'solid' ? 'Liso' : p.padrao === 'stripes' ? 'Listrado' : 'Poá'}</span>`;
+    const media = p.foto
+      ? `<img class="card-photo" src="${p.foto}" alt="${p.nome}">`
+      : iconFor(p, idx);
     return `
-      <article class="card" data-cat="${p.cat}">
-        <div class="card-media">
-          <span class="card-badge">${p.padrao === 'solid' ? 'Liso' : p.padrao === 'stripes' ? 'Listrado' : 'Poá'}</span>
-          ${iconFor(p, idx)}
+      <article class="card" data-cat="${p.cat}" onclick="abrirProduto(${realIdx})" style="cursor:pointer;">
+        <div class="card-media${p.foto ? ' card-media-photo' : ''}">
+          ${badge}
+          ${media}
         </div>
         <div class="card-body">
           <div class="card-cat">${catLabel[p.cat]}</div>
           <div class="card-title serif">${p.nome}</div>
           <div class="card-color">${p.cor}</div>
           <div class="card-row">
-            <div class="sizes"><span class="size">P</span><span class="size">M</span><span class="size">G</span></div>
+            <span class="card-tamanho">Tam. ${p.tamanho}</span>
             <div class="tag">R$ ${fmt(p.preco)}</div>
           </div>
-          <a class="card-cta" href="${waLink(p.nome)}" target="_blank" rel="noopener">Comprar no WhatsApp</a>
+          <span class="card-cta">Ver detalhes</span>
         </div>
       </article>`;
   }
@@ -521,30 +779,148 @@
   }
   render(produtos);
 
+  let filtroAtual = 'todos';
+  let tipoAtual = 'todos';
+
+  function aplicarFiltros(){
+    let lista = produtos;
+    if(filtroAtual !== 'todos') lista = lista.filter(p => p.cat === filtroAtual);
+    if(filtroAtual === 'biquini' && tipoAtual !== 'todos') lista = lista.filter(p => p.tipo === tipoAtual);
+    render(lista);
+  }
+
   document.getElementById('filters').addEventListener('click', (e) => {
     const btn = e.target.closest('.filter-btn');
     if(!btn) return;
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const f = btn.dataset.filter;
-    render(f === 'todos' ? produtos : produtos.filter(p => p.cat === f));
+    filtroAtual = btn.dataset.filter;
+
+    const subfilters = document.getElementById('subfilters');
+    if(filtroAtual === 'biquini'){
+      subfilters.classList.add('show');
+    } else {
+      subfilters.classList.remove('show');
+      tipoAtual = 'todos';
+      document.querySelectorAll('.subfilter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.subfilter-btn[data-tipo="todos"]').classList.add('active');
+    }
+    aplicarFiltros();
+  });
+
+  document.getElementById('subfilters').addEventListener('click', (e) => {
+    const btn = e.target.closest('.subfilter-btn');
+    if(!btn) return;
+    document.querySelectorAll('.subfilter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    tipoAtual = btn.dataset.tipo;
+    aplicarFiltros();
+  });
+
+  // ---------- PAINEL DE PRODUTO ----------
+  function relacionados(idxAtual){
+    return produtos.map((p,i) => i).filter(i => i !== idxAtual).slice(0,3);
+  }
+
+  function abrirProduto(idx){
+    const p = produtos[idx];
+    const painel = document.getElementById('produtoPainel');
+    const cor = corMap[p.cor] || '#0D3B8E';
+
+    // imagem grande: foto real se existir, senão ícone ilustrativo sobre gradiente da marca
+    const bigIcon = p.foto ? '' : iconFor(p, 'big-'+idx).replace('viewBox="0 0 140 140"', 'viewBox="0 0 140 140" style="width:46%;height:46%;"');
+    const mediaBg = p.foto ? '' : `background:linear-gradient(160deg, ${cor}33 0%, rgba(111,161,214,0.14) 45%, var(--offwhite) 100%);`;
+    const mediaBadge = p.padrao === 'foto' ? '' : `<span class="pp-badge">${p.padrao === 'solid' ? 'Liso' : p.padrao === 'stripes' ? 'Listrado' : 'Poá'}</span>`;
+    const mediaImg = p.foto ? `<img class="pp-photo" src="${p.foto}" alt="${p.nome}">` : '';
+    const mediaNote = p.foto ? '' : `<span class="pp-media-note">Foto em breve</span>`;
+
+    const relHTML = relacionados(idx).map(i => {
+      const r = produtos[i];
+      const relMedia = r.foto ? `<img class="rel-photo" src="${r.foto}" alt="${r.nome}">` : iconFor(r, 'rel-'+i);
+      return `
+        <article class="rel-card" onclick="abrirProduto(${i})">
+          <div class="rel-media${r.foto ? ' rel-media-photo' : ''}">${relMedia}</div>
+          <div class="rel-info">
+            <span class="rel-nome serif">${r.nome}</span>
+            <span class="rel-preco">R$ ${fmt(r.preco)}</span>
+          </div>
+        </article>`;
+    }).join('');
+
+    painel.innerHTML = `
+      <div class="pp-inner">
+        <div class="pp-watermark">
+          <span class="wm-moon"></span>
+          <span class="wm-wave"></span>
+          <span class="wm-text"></span>
+          <span class="wm-star"></span>
+        </div>
+        <button class="pp-close" onclick="fecharProduto()" aria-label="Voltar ao catálogo">← Voltar ao catálogo</button>
+
+        <div class="pp-main">
+          <div class="pp-media${p.foto ? ' pp-media-photo' : ''}" style="${mediaBg}">
+            ${mediaBadge}
+            ${mediaImg}
+            ${bigIcon}
+            ${mediaNote}
+          </div>
+
+          <div class="pp-details">
+            <div class="pp-eyebrow">LUNÉ · Coleção Verão</div>
+            <h2 class="pp-title serif">${p.nome}</h2>
+            <div class="pp-cor-label serif">${p.cor}</div>
+            <div class="pp-preco">R$ ${fmt(p.preco)}</div>
+            <p class="pp-desc">${p.desc}</p>
+
+            <div class="pp-fields">
+              <div class="pp-field-label">Cor</div>
+              <div class="pp-swatch" style="background:${cor}; color:${corEhClara(cor) ? 'var(--cobalto)' : '#fff'};">${p.cor}</div>
+
+              <div class="pp-field-label">Tamanho</div>
+              <div class="pp-swatch pp-swatch-outline">${p.tamanho}</div>
+            </div>
+
+            <div class="pp-buy-wrap">
+              <a class="pp-buy" href="${waLink(p.nome)}" target="_blank" rel="noopener">Comprar pelo WhatsApp</a>
+              <div class="pp-buy-note">Você será direcionada ao WhatsApp para finalizar</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pp-related">
+          <div class="pp-related-head">Você também vai gostar</div>
+          <div class="pp-related-grid">${relHTML}</div>
+        </div>
+      </div>`;
+
+    painel.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    painel.scrollTop = 0;
+  }
+
+  function fecharProduto(){
+    const painel = document.getElementById('produtoPainel');
+    painel.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // fecha com ESC
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') fecharProduto();
   });
 
   document.getElementById('scenesGrid').innerHTML = cenas.map(c => `
     <div class="scene">
       <div class="scene-num serif">${c.num}</div>
       <div class="scene-frame">
-        <svg viewBox="0 0 100 100" fill="none">
-          <path d="M46 18C58 18 68 28 68 42C68 56 58 66 46 66C54 62 60 53 60 42C60 31 54 22 46 18Z" stroke="#FEFDFB" stroke-width="1.1"/>
-          <path d="M20 78C30 72 42 72 50 78C58 72 70 72 80 78" stroke="#FEFDFB" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-        </svg>
+        <img src="${c.foto}" alt="${c.nome}">
       </div>
       <h3 class="serif">${c.nome}</h3>
       <p>${c.desc}</p>
     </div>
   `).join('');
 
-  const stripItems = ["Frete grátis acima de R$ 250", "Troca em até 30 dias", "Proteção UV50+", "Produção em pequenos lotes", "Envio pra todo o Brasil"];
+  const stripItems = ["Frete grátis acima de R$ 250", "Não realizamos trocas", "Enviamos para todo o Brasil"];
   document.getElementById('stripTrack').innerHTML = [...stripItems, ...stripItems].map(t => `<span>${t}</span>`).join('<span>·</span>');
 </script>
 
